@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>激アツ！日本のヤバすぎ経済成長マジ解説</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- Font updated to Kiwi Maru for cuter style (丸くて可愛いフォント！) -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Kiwi+Maru:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Pink/Fuchsia Theme (さらに派手に、キラキラに！) -->
+    <style>
+        body {
+            /* Very Light Pink Background for brightness */
+            font-family: 'Kiwi Maru', 'Inter', sans-serif;
+            background-color: #FFF5F9; 
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+        /* UPDATED: Deeper, more vibrant Rose Pink */
+        .text-theme-dark {
+            color: #FF007F; /* Rose */
+        }
+        /* UPDATED: Bright Hot Pink */
+        .text-theme-medium {
+            color: #FF69B4; /* Hot Pink */
+        }
+        .tab-button.active {
+            /* UPDATED: Brighter pink accent */
+            border-color: #FF69B4; 
+            background-color: #FFE3F1; /* Very Pale Rose */
+            font-weight: 700;
+            color: #FF007F;
+        }
+        .tab-button {
+            transition: all 0.2s ease-in-out;
+            color: #6B7280;
+        }
+        .content-panel {
+            display: none;
+        }
+        .content-panel.active {
+            display: block;
+        }
+        .card {
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+            /* Subtle pink inner glow */
+            box-shadow: 0 1px 3px 0 rgba(255, 105, 180, 0.1), 0 1px 2px -1px rgba(255, 105, 180, 0.06);
+        }
+        /* ADDED SPARKLE EFFECT */
+        .card:hover {
+            transform: translateY(-5px);
+            /* Stronger, glowing pink shadow for "Kira Kira" effect */
+            box-shadow: 0 12px 30px -5px rgba(255, 105, 180, 0.6), 0 4px 6px -2px rgba(255, 105, 180, 0.3);
+        }
+        .quiz-option-button {
+            background-color: #FFE8F5; /* Lighter Pink background */
+            color: #FF007F;
+            border: 2px solid #FF69B4;
+            transition: background-color 0.15s, transform 0.1s;
+        }
+        .quiz-option-button:hover:not(:disabled) {
+            background-color: #FBCFE8; /* Lighter Pink on hover */
+            transform: scale(1.02);
+        }
+        .quiz-option-button.correct {
+            background-color: #B9FBC0; /* Light Green for correct */
+            border-color: #10B981;
+            color: #065F46;
+        }
+        .quiz-option-button.incorrect {
+            background-color: #FFC0CB; /* Pink Red for incorrect */
+            border-color: #FF69B4;
+            color: #FF007F;
+        }
+        /* Style for the "Next" button to be more noticeable */
+        #next-button, #restart-button {
+            background-color: #FF69B4; /* Hot Pink */
+            box-shadow: 0 5px #F065A0; /* Darker shadow */
+            transform: translateY(-2px);
+            transition: all 0.1s ease;
+        }
+        #next-button:active, #restart-button:active {
+            transform: translateY(0);
+            box-shadow: 0 2px #F065A0;
+        }
+        /* ADDED TEXT GLOW TO MAIN TITLE */
+        .main-title-glow {
+            text-shadow: 2px 2px 4px rgba(255, 105, 180, 0.6), 0 0 8px rgba(255, 105, 180, 0.4);
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+    <div class="container mx-auto px-4 py-8">
+        <header class="text-center mb-10">
+            <!-- Added main-title-glow class for sparkle effect -->
+            <h1 class="text-4xl md:text-5xl font-bold text-theme-dark mb-2 main-title-glow">激アツ！日本のヤバすぎ経済成長マジ解説</h1>
+            <p class="text-lg text-theme-medium">'55〜'73年マジ神時代！アゲアゲなミラクル経済をチェックしよ！💖✨</p>
+        </header>
+
+        <main>
+            <div class="mb-8 border-b border-gray-300">
+                <nav class="flex flex-wrap -mb-px" id="tab-nav">
+                    <button class="tab-button active text-lg px-6 py-3 border-b-2 border-transparent" data-tab="overview">マジこれヤバい</button>
+                    <button class="tab-button text-lg px-6 py-3 border-b-2 border-transparent" data-tab="factors">ブチアゲな要因</button>
+                    <button class="tab-button text-lg px-6 py-3 border-b-2 border-transparent" data-tab="lifestyle">ライフ激変！</button>
+                    <button class="tab-button text-lg px-6 py-3 border-b-2 border-transparent" data-tab="shadow">泣きからの終焉</button>
+                    <!-- NEW QUIZ TAB -->
+                    <button class="tab-button text-lg px-6 py-3 border-b-2 border-transparent" data-tab="quiz">ギャル力テスト</button>
+                </nav>
+            </div>
+
+            <div id="tab-content">
+                <!-- 概要 (Overview) -->
+                <div id="overview" class="content-panel active">
+                    <section class="mb-12">
+                        <h2 class="text-3xl font-bold text-center mb-2 text-theme-dark">アゲアゲな時代の激カワ景気！</h2>
+                        <p class="text-center text-theme-medium mb-6">チャートをタップして、それぞれのブームのヤバさをチェックしてね！</p>
+                        <div class="bg-white rounded-xl shadow-lg p-6">
+                            <div class="chart-container">
+                                <canvas id="boomsChart"></canvas>
+                            </div>
+                        </div>
+                        <!-- Updated background color -->
+                        <div id="boom-details" class="mt-6 p-6 bg-[#FFE3F1] rounded-lg min-h-[120px] flex items-center justify-center text-center border-l-4 border-[#FF69B4]">
+                            <p class="text-theme-dark text-lg">チャートをタップして、詳細を読んでみて！</p>
+                        </div>
+                    </section>
+                     <section>
+                        <h2 class="text-3xl font-bold text-center mb-6 text-theme-dark">日本の成長マジパネェ！「戦後じゃねーし！」宣言</h2>
+                        <div class="grid md:grid-cols-2 gap-8 items-center">
+                            <div class="bg-white rounded-xl shadow-lg p-6 text-center">
+                                <h3 class="text-2xl font-semibold mb-4 text-theme-dark">平均GNP成長率 (年率)</h3>
+                                <div class="relative w-48 h-48 mx-auto">
+                                    <canvas id="growthRateChart"></canvas>
+                                    <div class="absolute inset-0 flex items-center justify-center">
+                                        <span class="text-4xl font-bold text-theme-dark">約10%</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="text-left">
+                                 <p class="text-lg text-gray-700 leading-relaxed">
+                                    1955年〜1973年の間、日本の経済成長率（GNP）は年平均10％超えとか、マジありえないレベル！すごすぎ！このブチアゲ成長のおかげで、1956年の<span class="font-bold text-theme-medium">経済白書</span>には「<span class="font-bold">もはや戦後ではない</span>」って書かれちゃったの！生活も超豊かになって、世界中が「日本、マジすごすぎ！」ってなった、奇跡の時代ってこと！
+                                </p>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+
+                <!-- 成長の要因 (Factors) -->
+                <div id="factors" class="content-panel">
+                    <section>
+                         <h2 class="text-3xl font-bold text-center mb-2 text-theme-dark">ブチアゲを支えた５つのマジック要素！</h2>
+                         <p class="text-center text-theme-medium mb-8">いろんな要素がミックスされて、日本の会社は世界最強になったってわけ！</p>
+                        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                            <!-- Cards benefit from the new hover glow -->
+                            <div class="card p-6 bg-white rounded-xl shadow-lg border-t-4 border-[#FF69B4]">
+                                <div class="text-4xl mb-3 text-theme-medium">🛠️</div>
+                                <h3 class="text-xl font-bold mb-2 text-theme-dark">最先端技術と設備マジ投資！</h3>
+                                <p class="text-gray-700">海外の新しい技術を速攻でパクって（導入して）、会社が新しい機械をガンガン買ったよ！エネルギーも石炭から安くて便利な<span class="font-bold">石油</span>に切り替えて、効率が超絶アップしたんだ！</p>
+                            </div>
+                            <div class="card p-6 bg-white rounded-xl shadow-lg border-t-4 border-[#FF69B4]">
+                                <div class="text-4xl mb-3 text-theme-medium">👥</div>
+                                <h3 class="text-xl font-bold mb-2">神システム！日本的経営とヤル気満々な社員</h3>
+                                <p class="text-gray-700"><span class="font-bold">終身雇用</span>（ずっとクビにならない）、<span class="font-bold">年功序列</span>（年齢で給料アップ）、<span class="font-bold">企業別組合</span>（会社ごとのチーム）っていう<span class="font-bold">日本的経営</span>システムが完成。みんなヤル気出して働いたし、<span class="font-bold">春闘</span>で給料上がって、欲しいもの買えたから経済もブチアゲ！</p>
+                            </div>
+                            <div class="card p-6 bg-white rounded-xl shadow-lg border-t-4 border-[#FF69B4]">
+                                <div class="text-4xl mb-3 text-theme-medium">📈</div>
+                                <h3 class="text-xl font-bold mb-2">政府もマジでノリノリ！景気優先政策</h3>
+                                <p class="text-gray-700"><span class="font-bold">池田勇人内閣</span>の「<span class="font-bold">所得倍増計画</span>」とか、とにかく「稼げ！」って政府が言いまくった時代！会社同士も銀行中心にグループ（企業集団）作って、世界と戦う準備OK！</p>
+                            </div>
+                            <div class="card p-6 bg-white rounded-xl shadow-lg border-t-4 border-[#FF69B4]">
+                                <div class="text-4xl mb-3 text-theme-medium">🌐</div>
+                                <h3 class="text-xl font-bold mb-2">世界デビュー！マジでオープンに！</h3>
+                                <p class="text-gray-700">1963年に<span class="font-bold">GATT11条国</span>、1964年には<span class="font-bold">IMF8条国</span>になって、海外との取引が超簡単になったよ。同じ年に<span class="font-bold">OECD</span>にも入って、世界の一員として資本を自由にするルールを守ったの！</p>
+                            </div>
+                             <div class="card p-6 bg-white rounded-xl shadow-lg border-t-4 border-[#FF69B4]">
+                                <div class="text-4xl mb-3 text-theme-medium">🚄</div>
+                                <h3 class="text-xl font-bold mb-2">イケてるインフラと神イベント！</h3>
+                                <p class="text-gray-700">1964年の<span class="font-bold">東京オリンピック</span>に合わせて、<span class="font-bold">東海道新幹線</span>が開通！移動がマジ快適に！国がお金かけて道路とか作ったから、経済もさらにアゲアゲ！日本が世界に「ウチら、イケてるでしょ？」ってアピールした瞬間！</p>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+
+                <!-- 生活の変化 (Lifestyle) -->
+                <div id="lifestyle" class="content-panel">
+                    <section>
+                        <h2 class="text-3xl font-bold text-center mb-2 text-theme-dark">みんな金持ち！中流意識マジ広がり！</h2>
+                        <p class="text-center text-theme-medium mb-8">給料がうなぎ登りだったから、みんなデカい買い物しまくり！ライフスタイルが超似てきたよ！</p>
+                        <div class="grid md:grid-cols-2 gap-8">
+                            <div class="p-8 bg-white rounded-xl shadow-lg border-l-4 border-[#FF69B4]">
+                                <h3 class="text-2xl font-bold text-center mb-4 text-theme-dark">超欲しかった！第一次ブーム (1950s後半)</h3>
+                                <h4 class="text-xl font-semibold text-center text-theme-medium mb-6">マストバイ！三種の神器</h4>
+                                <ul class="space-y-4 text-lg">
+                                    <li class="flex items-center"><span class="text-3xl mr-4">📺</span> 白黒テレビ（これでドラマ見まくり！）</li>
+                                    <li class="flex items-center"><span class="text-3xl mr-4">🧺</span> 電気洗濯機（洗濯が超楽になった！）</li>
+                                    <li class="flex items-center"><span class="text-3xl mr-4">🧊</span> 電気冷蔵庫（食べ物保存はマジで神！）</li>
+                                </ul>
+                                <p class="mt-6 text-gray-700">テレビとかCMで見て、みんなこれが無いとヤバい！ってなって、超売れまくったの！家事の手間が劇的に減ってマジ助かる！</p>
+                            </div>
+                            <div class="p-8 bg-white rounded-xl shadow-lg border-l-4 border-[#FF69B4]">
+                                <h3 class="text-2xl font-bold text-center mb-4 text-theme-dark">激アツ！第二次ブーム (1960s)</h3>
+                                <h4 class="text-xl font-semibold text-center text-theme-medium mb-6">ヤバい！新・三種の神器 (3C)</h4>
+                                <ul class="space-y-4 text-lg">
+                                    <li class="flex items-center"><span class="text-3xl mr-4">🚗</span> Car (マイカーでドライブ！)</li>
+                                    <li class="flex items-center"><span class="text-3xl mr-4">❄️</span> Cooler (クーラーで夏も快適！)</li>
+                                    <li class="flex items-center"><span class="text-3xl mr-4">🌈</span> Color TV (カラーテレビでド派手！)</li>
+                                </ul>
+                                <p class="mt-6 text-gray-700">みんなが同じように豊かになって、「うちらって社会の中間層じゃね？」っていう<span class="font-bold">中流意識</span>が広まったよ！とにかく消費しまくりな時代！</p>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+
+                <!-- 成長の影と終焉 (Shadow) -->
+                <div id="shadow" class="content-panel">
+                     <section>
+                        <h2 class="text-3xl font-bold text-center mb-2 text-theme-dark">アゲアゲな成長の「ちょっと泣き」な裏側...</h2>
+                        <p class="text-center text-theme-medium mb-8">急ぎすぎた結果、環境汚染と田舎と都会の格差っていう、マジ無理な問題が起きちゃったの...</p>
+                        <div class="grid md:grid-cols-2 gap-8 mb-12">
+                            <div class="p-6 bg-white rounded-xl shadow-lg border-t-4 border-red-500">
+                                <div class="text-4xl mb-3 text-red-500">🏭</div>
+                                <h3 class="text-xl font-bold mb-2 text-theme-dark">マジ公害！環境がヤバすぎ問題</h3>
+                                <p class="text-gray-700">「稼げればOK！」ってやりすぎたから、四大公害病とか、超ヤバい公害が多発😭。さすがにマズいってことで、1967年に<span class="font-bold">公害対策基本法</span>を作って、1971年には<span class="font-bold">環境庁</span>っていう専門の役所もできたの！</p>
+                            </div>
+                             <div class="p-6 bg-white rounded-xl shadow-lg border-t-4 border-red-500">
+                                <div class="text-4xl mb-3 text-red-500">🌾</div>
+                                <h3 class="text-xl font-bold mb-2 text-theme-dark">田舎がガラガラ！食料が足りないかも問題</h3>
+                                <p class="text-gray-700">みんな都会に働きに行っちゃったから、田舎は<span class="font-bold">過疎化</span>で寂しくなっちゃった...。1961年の<span class="font-bold">農業基本法</span>で農家は変わったけど、お米以外は外国頼みで<span class="font-bold">食料自給率が低下</span>。都会と田舎の格差がマジでデカくなったの！</p>
+                            </div>
+                        </div>
+
+                        <h2 class="text-3xl font-bold text-center mb-2 text-theme-dark">ブームの終わり...さよなら高度経済成長</h2>
+                         <p class="text-center text-theme-medium mb-8">「このアゲアゲは永遠！」って思ってたのに、突然のピリオド！</p>
+                        <!-- Updated background and border colors for visual emphasis -->
+                        <div class="bg-[#FFE3F1] border-l-4 border-[#FF69B4] text-theme-dark p-6 rounded-r-lg shadow-md">
+                            <h3 class="text-xl font-bold mb-2">1973年 オイル・ショック（第一次石油危機）</h3>
+                            <p>中東で戦争があって、石油の値段が**ブチ上がり**！😭 安い石油に頼りすぎてた日本は、大パニック！物価が異常に高くなる「狂乱物価」が起きて、戦後初めてマイナス成長に…。これで高度経済成長は終わり！**安定成長期**っていう、落ち着いた時代に変わっちゃったんだ。</p>
+                        </div>
+                    </section>
+                </div>
+
+                <!-- クイズ (Quiz) -->
+                <div id="quiz" class="content-panel">
+                    <section class="text-center">
+                        <h2 class="text-3xl font-bold mb-2 text-theme-dark">ギャル力テスト！知識をチェック！</h2>
+                        <p class="text-theme-medium mb-8">ここで学んだこと、ちゃんと頭に入ってるか確認しよ！間違えても気にしない気にしない！</p>
+
+                        <div id="quiz-container" class="bg-white rounded-xl shadow-lg p-8 max-w-lg mx-auto">
+                            <div id="quiz-status" class="text-sm text-gray-500 mb-4"></div>
+                            
+                            <div id="question-card" class="min-h-[100px] flex flex-col justify-center items-center">
+                                <h3 id="quiz-question" class="text-xl font-semibold mb-6 text-theme-dark"></h3>
+                                <div id="quiz-options" class="flex flex-col space-y-3 w-full">
+                                    <!-- Options will be injected here -->
+                                </div>
+                                <p id="quiz-feedback" class="mt-4 text-lg font-bold min-h-[30px]"></p>
+                            </div>
+
+                            <!-- Next/Restart buttons are now bright pink with strong shadows -->
+                            <button id="next-button" class="mt-6 px-6 py-2 bg-[#FF69B4] text-white font-bold rounded-lg shadow-md hover:bg-[#F065A0] transition disabled:opacity-50" disabled>
+                                次の問題へGO!
+                            </button>
+                            <button id="restart-button" class="mt-6 px-6 py-2 bg-gray-500 text-white font-bold rounded-lg shadow-md hover:bg-gray-600 transition hidden">
+                                もう一回アタック
+                            </button>
+                        </div>
+                    </section>
+                </div>
+                <!-- END NEW QUIZ PANEL -->
+
+            </div>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Chart Setup (Existing - colors adjusted for new theme)
+            const chartColorPrimary = 'rgba(255, 105, 180, 0.7)'; // Hot Pink
+            const chartColorGNP = 'rgba(255, 0, 127, 0.8)'; // New Deep Pink
+            const chartColorOther = 'rgba(230, 230, 230, 0.8)';
+            
+            // Boom Data (Text adjusted to Gal Mind)
+            const boomData = [
+                { name: '神武景気 (神ってる！)', start: 1955, end: 1957, description: '戦後の貧乏時代をマジで脱出！「もう戦後じゃねーし！」って経済白書で宣言されちゃった、最初の超デカいブームだよ！みんなお金使いまくりでアゲアゲ！' },
+                { name: '岩戸景気 (景気ヤバい！)', start: 1958, end: 1961, description: '新しい技術のおかげで、会社の設備投資が超絶アップ！日本のGNPは西ドイツを抜いて世界で2番目とか、マジパネェ！' },
+                { name: 'オリンピック景気 (イベント最高！)', start: 1963, end: 1964, description: '1964年の東京オリンピックに向けて、東海道新幹線とかインフラ整備が超進んだ！経済もブチ上がりで、日本が世界に「いらっしゃい！」って言えた感じ！' },
+                { name: 'いざなぎ景気 (最長アゲ！)', start: 1965, end: 1970, description: '「所得倍増計画」のおかげで、なんと57ヶ月も続いた、戦後最長のブーム！新・三種の神器が流行って、みんなが同じ生活スタイルになった、超豊か時代！' }
+            ];
+
+            const ctxBooms = document.getElementById('boomsChart').getContext('2d');
+            new Chart(ctxBooms, {
+                type: 'bar',
+                data: {
+                    labels: boomData.map(d => d.name),
+                    datasets: [{
+                        label: 'ブチアゲ景気期間',
+                        data: boomData.map(d => ({ x: [d.start, d.end], y: d.name })),
+                        backgroundColor: chartColorPrimary,
+                        borderColor: chartColorPrimary.replace('0.7', '1'),
+                        borderWidth: 1,
+                        barPercentage: 0.5,
+                        categoryPercentage: 0.7
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: {
+                            min: 1954,
+                            max: 1973,
+                            title: {
+                                display: true,
+                                text: '年'
+                            }
+                        },
+                        y: {
+                            grid: {
+                                display: false
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const item = context.dataset.data[context.dataIndex];
+                                    return `${item.y}: ${item.x[0]}年 - ${item.x[1]}年`;
+                                }
+                            }
+                        }
+                    },
+                    onClick: (event, elements) => {
+                        if (elements.length > 0) {
+                            const index = elements[0].index;
+                            const details = boomData[index];
+                            const detailsEl = document.getElementById('boom-details');
+                            detailsEl.innerHTML = `
+                                <div class="text-left">
+                                    <h3 class="font-bold text-xl mb-2 text-theme-dark">${details.name} (${details.start}〜${details.end}年)</h3>
+                                    <p class="text-gray-700">${details.description}</p>
+                                </div>
+                            `;
+                        }
+                    }
+                }
+            });
+            
+            const ctxGrowth = document.getElementById('growthRateChart').getContext('2d');
+            new Chart(ctxGrowth, {
+                type: 'doughnut',
+                data: {
+                    labels: ['経済成長', 'その他'],
+                    datasets: [{
+                        data: [10, 90],
+                        backgroundColor: [chartColorGNP, chartColorOther],
+                        borderColor: ['#FFFFFF', '#FFFFFF'],
+                        borderWidth: 4,
+                        hoverOffset: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    cutout: '70%',
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            enabled: false
+                        }
+                    }
+                }
+            });
+
+            // Tab Logic (Existing)
+            const tabs = document.querySelectorAll('.tab-button');
+            const panels = document.querySelectorAll('.content-panel');
+            
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    const targetTab = tab.dataset.tab;
+                    tabs.forEach(t => t.classList.remove('active'));
+                    panels.forEach(p => p.classList.remove('active'));
+                    
+                    tab.classList.add('active');
+                    const targetPanel = document.getElementById(targetTab);
+                    if (targetPanel) {
+                        targetPanel.classList.add('active');
+                    }
+                    // Initialize quiz when the quiz tab is clicked
+                    if (targetTab === 'quiz') {
+                        initializeQuiz();
+                    }
+                });
+            });
+
+
+            // QUIZ LOGIC (GAL MIND)
+            const quizData = [
+                {
+                    question: "1956年の経済白書で宣言された「もう戦後じゃないし！」な景気ブームの名前は？",
+                    options: ["岩戸景気", "神武景気", "いざなぎ景気"],
+                    answer: "神武景気"
+                },
+                {
+                    question: "日本的経営システムの、マジで神ってる特色に『含まれない』のはどれ？",
+                    options: ["年功序列賃金", "終身雇用", "成果主義賃金"],
+                    answer: "成果主義賃金"
+                },
+                {
+                    question: "池田勇人内閣がブチアゲた「みんなの給料増やそう！」なスローガンは？",
+                    options: ["景気回復計画", "所得倍増計画", "新・富裕層誕生プラン"],
+                    answer: "所得倍増計画"
+                },
+                {
+                    question: "1960年代に流行った「新・三種の神器（3C）」で、Cが意味しないものは？",
+                    options: ["Car（自動車）", "Cleaner（掃除機）", "Color TV（カラーテレビ）"],
+                    answer: "Cleaner（掃除機）"
+                },
+                {
+                    question: "アゲアゲな経済成長を終わらせた、1973年の『物価マジやばい！』事件は？",
+                    options: ["ニクソン・ショック", "オイル・ショック（第一次石油危機）", "東京大地震"],
+                    answer: "オイル・ショック（第一次石油危機）"
+                }
+            ];
+
+            let currentQuestionIndex = 0;
+            let score = 0;
+            let currentQuizSet = [];
+            let answered = false;
+
+            const quizQuestionEl = document.getElementById('quiz-question');
+            const quizOptionsEl = document.getElementById('quiz-options');
+            const quizFeedbackEl = document.getElementById('quiz-feedback');
+            const quizStatusEl = document.getElementById('quiz-status');
+            const nextButton = document.getElementById('next-button');
+            const restartButton = document.getElementById('restart-button');
+
+            function initializeQuiz() {
+                // Shuffle all questions and take the first 3 or 4
+                currentQuizSet = quizData.sort(() => 0.5 - Math.random()).slice(0, 3); 
+                currentQuestionIndex = 0;
+                score = 0;
+                nextButton.innerText = "次の問題へGO!";
+                nextButton.classList.remove('hidden');
+                restartButton.classList.add('hidden');
+                loadQuestion();
+            }
+
+            function loadQuestion() {
+                answered = false;
+                quizFeedbackEl.textContent = '';
+                nextButton.disabled = true;
+
+                if (currentQuestionIndex < currentQuizSet.length) {
+                    const currentQ = currentQuizSet[currentQuestionIndex];
+                    quizStatusEl.textContent = `アタック ${currentQuestionIndex + 1} / ${currentQuizSet.length}`;
+                    quizQuestionEl.textContent = currentQ.question;
+
+                    quizOptionsEl.innerHTML = '';
+                    // Shuffle options before displaying
+                    const shuffledOptions = currentQ.options.sort(() => 0.5 - Math.random()); 
+
+                    shuffledOptions.forEach(option => {
+                        const button = document.createElement('button');
+                        button.textContent = option;
+                        button.classList.add('quiz-option-button', 'p-3', 'rounded-lg', 'text-left', 'shadow-sm', 'font-medium');
+                        button.onclick = () => checkAnswer(button, option, currentQ.answer);
+                        quizOptionsEl.appendChild(button);
+                    });
+                } else {
+                    showResults();
+                }
+            }
+
+            function checkAnswer(selectedButton, selectedOption, correctAnswer) {
+                if (answered) return;
+                answered = true;
+
+                // Disable all buttons
+                Array.from(quizOptionsEl.children).forEach(button => {
+                    button.disabled = true;
+                });
+
+                if (selectedOption === correctAnswer) {
+                    selectedButton.classList.add('correct');
+                    quizFeedbackEl.textContent = '✅ ぶっちゃけ正解！アゲ！';
+                    quizFeedbackEl.classList.remove('text-red-600');
+                    quizFeedbackEl.classList.add('text-green-600');
+                    score++;
+                } else {
+                    selectedButton.classList.add('incorrect');
+                    quizFeedbackEl.textContent = '❌ マジかー！ハズレだよ、泣き...';
+                    quizFeedbackEl.classList.remove('text-green-600');
+                    quizFeedbackEl.classList.add('text-red-600');
+                    // Highlight the correct answer
+                    Array.from(quizOptionsEl.children).forEach(button => {
+                        if (button.textContent === correctAnswer) {
+                            button.classList.add('correct');
+                        }
+                    });
+                }
+                nextButton.disabled = false;
+                if (currentQuestionIndex === currentQuizSet.length - 1) {
+                    nextButton.innerText = "結果をチェック！";
+                }
+            }
+
+            function showResults() {
+                quizStatusEl.textContent = 'テスト終了！';
+                quizQuestionEl.textContent = '君のギャル力は？';
+                quizOptionsEl.innerHTML = '';
+                quizFeedbackEl.classList.remove('text-red-600', 'text-green-600');
+                
+                const resultText = document.createElement('p');
+                resultText.classList.add('text-3xl', 'font-bold', 'text-theme-dark');
+                resultText.innerHTML = `${score} / ${currentQuizSet.length} 問正解！`;
+                quizOptionsEl.appendChild(resultText);
+
+                const message = document.createElement('p');
+                message.classList.add('mt-4', 'text-lg');
+                if (score === currentQuizSet.length) {
+                     message.textContent = 'マジ神！💯 満点とか強すぎん？もう完璧じゃん！';
+                     message.classList.add('text-green-600', 'font-bold');
+                } else if (score >= currentQuizSet.length / 2) {
+                     message.textContent = 'おっけー！半分以上正解とか、結構イケてるじゃん！👍';
+                     message.classList.add('text-theme-medium', 'font-bold');
+                } else {
+                    message.textContent = 'マジで？！もう一回レポ読んで復習しよ！次はブチ上げよ！';
+                    message.classList.add('text-red-600', 'font-bold');
+                }
+                quizOptionsEl.appendChild(message);
+                
+                nextButton.classList.add('hidden');
+                restartButton.classList.remove('hidden');
+            }
+
+            nextButton.addEventListener('click', () => {
+                currentQuestionIndex++;
+                loadQuestion();
+            });
+
+            restartButton.addEventListener('click', () => {
+                initializeQuiz();
+            });
+
+            // Initial load of the first question (if the quiz tab is the initial active tab, otherwise it loads on tab click)
+            if (document.getElementById('quiz').classList.contains('active')) {
+                 initializeQuiz();
+            }
+        });
+    </script>
+</body>
+</html>
