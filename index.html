@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>💖戦後ニッポン激アツ外交史💖 55年体制ってマジヤバくない？</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chosen Palette: Dusty Rose Pink & Light Beige-Pink (Soft/Cute Tone) -->
+    <!-- Application Structure Plan: The SPA is structured thematically to guide the user from foundational concepts to specific events and their consequences. The flow is: 1. Introduction Header. 2. An interactive breakdown of the 1955 System's political structure (expanded to include pre-1955 context like Hatoyama and security laws). 3. An exploration of the core "Yoshida Doctrine" via interactive cards. 4. A central, interactive timeline of major diplomatic events, replacing the static table for better exploration (expanded to include details like the Anpo struggle and Okinawa reversion). 5. A summary of the system's long-term impacts using an icon-driven layout. 6. A final quiz section for knowledge consolidation. This structure was chosen over a simple linear report to deconstruct a complex topic into digestible, interactive segments, reducing cognitive load and encouraging user exploration. The user learns the "what" and "why" before diving into the "when" and "how". -->
+    <!-- Visualization & Content Choices: 
+        - Report Info: LDP vs JSP political structure (EXPANDED to include establishment context) -> Goal: Compare/Organize/Inform -> Viz/Presentation: Two-column interactive layout (with pre-context panel) -> Interaction: Click to expand details and show context -> Justification: Visually represents the core political dichotomy and its historical roots, making the ideological conflict and its origins clearer. -> Library/Method: HTML/Tailwind/JS.
+        - Report Info: The three points of the Yoshida Doctrine -> Goal: Inform -> Viz/Presentation: Interactive cards -> Interaction: Click to reveal full text -> Justification: Breaks down the core diplomatic strategy into memorable, bite-sized components. -> Library/Method: HTML/Tailwind/JS.
+        - Report Info: Table of Prime Ministers and achievements (EXPANDED) -> Goal: Show Change/Explore Chronology -> Viz/Presentation: Vertical interactive timeline -> Interaction: Click on a PM/event to display detailed information in a dedicated panel -> Justification: Transforms a static data table into an engaging, explorable narrative of diplomatic history, including key events like the Security Treaty revision and Okinawa return. -> Library/Method: HTML/Tailwind/JS.
+        - Report Info: Impacts of the political conflict on diplomacy -> Goal: Organize/Summarize -> Viz/Presentation: Icon-driven list -> Interaction: Click to read explanation -> Justification: Uses simple visual metaphors (lock, yen, dove) to make abstract consequences more concrete and easily scannable. -> Library/Method: HTML/Tailwind/JS with Unicode icons.
+        - Report Info: Quiz -> Goal: Test knowledge -> Viz/Presentation: Card-based multiple choice UI -> Interaction: Click option, show result/explanation, proceed -> Justification: Provides immediate feedback on content mastery. -> Library/Method: HTML/Tailwind/JS.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        /* ベースカラーを優しいピンク系に再調整 */
+        body {
+            font-family: 'Hiragino Kaku Gothic ProN', 'Meiryo', sans-serif;
+            background-color: #FFF7F9; /* 超淡いピンクベージュ (目に優しい) */
+            color: #333;
+        }
+        .bg-primary { background-color: #FFF7F9; } /* 背景色変更 */
+        .bg-secondary { background-color: #FFFFFF; }
+
+        /* メインアクセントカラー：ダスティローズピンク (#F687B3) */
+        .accent-color { color: #F687B3; } /* ピンクに変更 (重要箇所強調) */
+        .bg-accent-fill { background-color: #F687B3; } /* ピンクに変更 */
+        .border-accent { border-color: #F687B3; } /* ピンクに変更 */
+        
+        /* タイムラインのスタイルをピンクに */
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -31px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: #FFFFFF;
+            border: 4px solid #F687B3; /* ピンクに変更 */
+            z-index: 1;
+        }
+        .timeline-item.active::before {
+            background-color: #F687B3; /* ピンクに変更 */
+        }
+        .content-card {
+            transition: all 0.3s ease-in-out;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+        }
+        .content-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.1);
+        }
+        .interactive-section {
+            cursor: pointer;
+        }
+        
+        /* Quiz button styles - ピンク系に統一 */
+        .quiz-option-btn {
+            background-color: #FFF5F7; /* 超淡いピンク */
+            color: #E970A4; /* 濃いめのピンク */
+            border: 1px solid #FECDD3; /* 淡いピンクのボーダー */
+            transition: all 0.2s;
+        }
+        .quiz-option-btn:hover:not(:disabled) {
+            background-color: #FEE2E2; /* 少し濃い淡いピンク */
+            transform: translateY(-2px);
+            box-shadow: 0 2px 4px rgba(246, 135, 179, 0.5); /* ピンクのシャドウに変更 */
+        }
+        /* 正解・不正解の色は視認性のため維持 */
+        .quiz-option-btn.correct {
+            background-color: #C6F6D5; /* Green */
+            border-color: #68D391;
+            color: #2F855A;
+        }
+        .quiz-option-btn.incorrect {
+            background-color: #FED7D7; /* Red */
+            border-color: #F56565;
+            color: #C53030;
+        }
+    </style>
+</head>
+<body class="bg-primary">
+
+    <main class="container mx-auto p-4 sm:p-6 md:p-8">
+
+        <header class="text-center mb-12 md:mb-16">
+            <h1 class="text-3xl sm:text-4xl md:text-5xl font-bold accent-color mb-4">✨戦後ニッポン激アツ外交史✨</h1>
+            <p class="text-lg text-gray-600 max-w-3xl mx-auto">戦後の日本を形作った**「55年体制」**をマジでざっくり解説！政治の仕組み、基本ルール、そして激動の外交イベントを一緒にサクッと見ていこ！</p>
+        </header>
+
+        <section id="system-structure" class="mb-12 md:mb-20">
+            <h2 class="text-2xl md:text-3xl font-bold accent-color text-center mb-8">1. 👑マジで知りたい！55年体制ってこうやって始まったんだって👑</h2>
+            <p class="text-center text-gray-600 mb-8 max-w-4xl mx-auto">1955年に体制ができたんだけど、それまでは超ドロドロのバトルがあったんだ！保守派と革新派のヤバい対立と、体制成立までの流れをCheck！</p>
+            
+            <div id="establishment-context" class="p-6 bg-secondary rounded-lg mb-8 content-card">
+                <h3 class="text-xl font-bold accent-color mb-3">🔥体制成立までのエモい流れ (1952-1955)</h3>
+                <div class="text-gray-700 space-y-3">
+                    <p><span class="font-semibold">初期の対立アゲ:</span> **吉田茂**内閣は、ヤバいデモ（血のメーデー事件①）を背景に1952年、<strong class="text-red-600">破壊活動防止法（②）</strong>を作って、革新派へのプレッシャーを強めたの。さらに1954年には<strong class="text-red-600">MSA協定（③）</strong>結んで、アメリカのヘルプで<strong class="text-red-600">自衛隊（④）</strong>をスタートさせたよ！</p>
+                    <p><span class="font-semibold">革新派の反発マジヤバい:</span> この保守派の動きに対して、革新派は米軍基地反対とか、1954年の<strong class="text-blue-600">第五福竜丸事件（⑥）</strong>で核反対ムーブメントを超〜広げて、徹底的に抵抗したんだ！</p>
+                    <p><span class="font-semibold">政党再編ドラマ:</span> 1954年、吉田内閣退陣後、<strong class="text-red-600">鳩山一郎（⑦, ⑨）</strong>が**日本民主党（⑧）**作ったんだよね！<strong class="text-blue-600">社会党</strong>も「改憲なんて絶対ヤダ！」ってマジ団結（1955年）して、**改憲阻止の議席を確保**！これにビビった保守派は、<strong class="text-red-600">日本民主党と自由党が合同（⑪）</strong>して、**激強**の<strong class="text-red-600">自由民主党</strong>を結成！ここに、<strong class="text-red-600">保守一党優位の「55年体制」（⑫）</strong>が確定したってわけ！</p>
+                    <p><span class="font-semibold text-sm block pt-3 border-t mt-4">体制下での変化Check:</span> 1960年代〜1970年代は、社会党から新しい政党（民主社会党）ができたり、公明党や共産党も議席増やして、ちょっとずつ体制に変化の兆しが出てきたよ。</p>
+                </div>
+            </div>
+
+            <h3 class="text-xl font-bold accent-color text-center mb-6 mt-10">ガチバトル！保守と革新の基本スタンス</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div id="conservative-party" class="interactive-section p-6 bg-secondary rounded-lg border-2 border-transparent hover:border-accent transition-all duration-300">
+                    <h3 class="text-xl font-bold text-center text-red-700 mb-4">与党：保守 (自由民主党) 💖</h3>
+                    <div id="conservative-details" class="hidden text-gray-700 space-y-2">
+                        <p><strong>基本路線：</strong></p>
+                        <ul class="list-disc list-inside">
+                            <li>超アメリカと仲良くして西側チームで頑張る（日米安保条約はマスト！）</li>
+                            <li>何より**経済成長**を最優先でアゲる！</li>
+                            <li>初期は憲法改正とか再軍備もマジで考えてたよ（⑨）</li>
+                        </ul>
+                    </div>
+                    <p id="conservative-prompt" class="text-center text-gray-500">クリックして詳細を表示</p>
+                </div>
+                <div id="progressive-party" class="interactive-section p-6 bg-secondary rounded-lg border-2 border-transparent hover:border-accent transition-all duration-300">
+                    <h3 class="text-xl font-bold text-center text-blue-700 mb-4">野党：革新 (日本社会党) 💙</h3>
+                    <div id="progressive-details" class="hidden text-gray-700 space-y-2">
+                        <p><strong>基本路線：</strong></p>
+                        <ul class="list-disc list-inside">
+                            <li>武器なんていらねー！**平和が一番！**（非武装中立）</li>
+                            <li>日米安保条約は**即解消！**</li>
+                            <li>平和憲法（特に第9条）は絶対守る派！</li>
+                        </ul>
+                    </div>
+                     <p id="progressive-prompt" class="text-center text-gray-500">クリックして詳細を表示</p>
+                </div>
+            </div>
+        </section>
+        
+        <section id="yoshida-doctrine" class="mb-12 md:mb-20">
+            <h2 class="text-2xl md:text-3xl font-bold accent-color text-center mb-8">2. 🔑ニッポンの基本ルール：吉田ドクトリンをCheck！🔑</h2>
+            <p class="text-center text-gray-600 mb-10 max-w-3xl mx-auto">この体制の外交は、**吉田茂**さんが決めた「吉田ドクトリン」がベースなの。国内のケンカを避けて、お金稼ぎに集中するための超現実的な作戦だったんだ！3つのルールを見てみよ！</p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="content-card bg-secondary p-6 rounded-lg">
+                    <h3 class="font-bold text-lg mb-2 accent-color">① 🇺🇸アメちゃんに守ってもらう！</h3>
+                    <p class="text-gray-700">国の安全は全部アメリカとの**日米安保体制**にお任せ！自分たちの軍事力は超控えめにしておこう！ってこと。</p>
+                </div>
+                <div class="content-card bg-secondary p-6 rounded-lg">
+                    <h3 class="font-bold text-lg mb-2 accent-color">② 💰お金稼ぎに超集中する！</h3>
+                    <p class="text-gray-700">軍隊にお金を使うのは最小限にして、その分のリソースを全部、**経済の復興と高度成長**にブッ込む！</p>
+                </div>
+                <div class="content-card bg-secondary p-6 rounded-lg sm:col-span-2 lg:col-span-1">
+                    <h3 class="font-bold text-lg mb-2 accent-color">③ 🤫政治では出しゃばらない。ひかえめイズム！</h3>
+                    <p class="text-gray-700">国際社会で「政治的なリーダーシップ」とかは追わないで、**経済外交**に徹して低姿勢を貫く！</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="timeline-section" class="mb-12 md:mb-20">
+            <h2 class="text-2xl md:text-3xl font-bold accent-color text-center mb-8">3. 🌈エモい！激アツ外交イベント年表🌈</h2>
+            <p class="text-center text-gray-600 mb-10 max-w-3xl mx-auto">与党と野党がケンカしてる間も、総理大臣たちは頑張ってた！ニッポンの地位をアゲた重要イベントを、タイムラインでサクッとチェックしてね！クリックすると詳細が見れるよ！</p>
+            <div class="md:grid md:grid-cols-3 md:gap-8">
+                <div class="md:col-span-1 relative">
+                    <div class="absolute left-4 top-0 h-full w-0.5 bg-gray-300"></div>
+                    <div id="timeline-nav" class="space-y-4">
+                    </div>
+                </div>
+                <div class="md:col-span-2 mt-8 md:mt-0">
+                    <div id="timeline-details" class="p-8 bg-secondary rounded-lg sticky top-8 min-h-[300px] content-card">
+                        <p class="text-gray-500 text-center">タイムラインから項目を選択してください。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="impact-section" class="mb-12 md:mb-20">
+            <h2 class="text-2xl md:text-3xl font-bold accent-color text-center mb-8">4. 💡ぶっちゃけ、この体制ってニッポンに何残したの？💡</h2>
+            <p class="text-center text-gray-600 mb-10 max-w-3xl mx-auto">「保守 vs 革新」の構造が、ニッポンの外交に超〜デカい影響を与えたんだ。その具体的な結果をアイコンで見てみよ！クリックで詳細だよ！</p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div id="impact-1" class="interactive-section text-center p-6 bg-secondary rounded-lg">
+                    <div class="text-5xl mb-4">🔒</div>
+                    <h3 class="font-bold text-lg mb-2">安保の議論は封印！</h3>
+                    <p class="text-gray-500 text-sm">クリックして詳細表示</p>
+                    <div id="impact-details-1" class="hidden text-left mt-4 text-gray-700">
+                        <p>憲法改正とか安保条約のことは、ケンカの原因になるから、国民的議論は超〜避けられて**「タブー」**になっちゃったんだ。</p>
+                    </div>
+                </div>
+                <div id="impact-2" class="interactive-section text-center p-6 bg-secondary rounded-lg">
+                    <div class="text-5xl mb-4">📈</div>
+                    <h3 class="font-bold text-lg mb-2">世界で活躍！お仕事（経済）外交ガチ勢に</h3>
+                    <p class="text-gray-500 text-sm">クリックして詳細表示</p>
+                    <div id="impact-details-2" class="hidden text-left mt-4 text-gray-700">
+                        <p>イデオロギーバトルを避けて、国民も応援してくれる「経済成長」に全振り！貿易とか経済協力を頑張って国際的地位を爆アゲしたよ。</p>
+                    </div>
+                </div>
+                <div id="impact-3" class="interactive-section text-center p-6 bg-secondary rounded-lg">
+                    <div class="text-5xl mb-4">🕊️</div>
+                    <h3 class="font-bold text-lg mb-2">ニッポン＝超平和国家！が定着</h3>
+                    <p class="text-gray-500 text-sm">クリックして詳細表示</p>
+                    <div id="impact-details-3" class="hidden text-left mt-4 text-gray-700">
+                        <p>野党の「平和主義」のおかげで、政府も「平和国家」をマジでアピール。軍事じゃなくて、経済支援とかで国際貢献するのが基本スタイルになったよ。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. クイズセクションの追加 -->
+        <section id="quiz-section" class="mb-12 md:mb-20">
+            <h2 class="text-2xl md:text-3xl font-bold accent-color text-center mb-8">5. 💖知識Check💖 クイズで確認！</h2>
+            <div class="p-8 bg-secondary rounded-lg content-card max-w-2xl mx-auto">
+                <div id="quiz-container">
+                    <!-- クイズが表示される場所 -->
+                    <h3 id="quiz-question" class="text-xl font-bold text-gray-800 mb-6"></h3>
+                    <div id="quiz-options" class="space-y-4">
+                        <!-- 選択肢ボタンが表示される場所 -->
+                    </div>
+                    <div id="quiz-feedback" class="mt-6 p-4 text-sm rounded-lg hidden">
+                        <!-- 結果と解説が表示される場所 -->
+                        <p id="quiz-result" class="font-bold mb-2"></p>
+                        <p id="quiz-explanation"></p>
+                    </div>
+                    <button id="next-quiz-btn" class="mt-6 w-full py-3 rounded-lg text-white font-semibold hidden bg-accent-fill hover:opacity-90 transition-opacity" onclick="nextQuiz()">次の問題へGO！</button>
+                    <button id="restart-quiz-btn" class="mt-6 w-full py-3 rounded-lg text-white font-semibold hidden bg-accent-fill hover:opacity-90 transition-opacity" onclick="resetQuiz()">最初からもう一回チャレンジ！</button>
+                </div>
+            </div>
+        </section>
+
+        <footer class="text-center border-t pt-8 mt-12">
+            <h2 class="text-2xl font-bold accent-color mb-4">まとめ</h2>
+            <p class="text-gray-600 max-w-3xl mx-auto">
+                つまり！55年体制の外交は、冷戦と国内の超〜ドロドロバトルの中で、**「アメちゃんに守ってもらいつつ、ニッポンは経済でガチる！」**っていう基本スタイルを作ったんだね。このスタイルは1993年まで続いて、戦後ニッポンの外交の基本をマジで決めたってわけ！超勉強になったっしょ！😘
+            </p>
+        </footer>
+
+    </main>
+
+    <script>
+        // タイムラインデータ
+        const timelineData = [
+            {
+                pm: '鳩山一郎',
+                period: '1954-1956',
+                achievement: '日ソ共同宣言（⑭）、国際連合加盟（⑮）',
+                details: '吉田茂の次を継いで、憲法改正とか再軍備をめざす内閣（⑨）としてスタート。冷戦がちょっと落ち着いた時（チャンス！）に、1956年に<strong class="text-red-600">日ソ共同宣言</strong>でソ連と仲直りして国交正常化を実現！これによりソ連のプッシュもあって、同年の<strong class="text-red-600">国際連合加盟</strong>が実現！国際復帰アゲ！'
+            },
+            {
+                pm: '石橋湛山',
+                period: '1956-1957',
+                achievement: '残念ながら短命内閣（⑯）',
+                details: '鳩山さんの後を継いだんだけど、体調悪くなっちゃってすぐに辞めちゃったんだって。'
+            },
+            {
+                pm: '岸信介',
+                period: '1957-1960',
+                achievement: '日米相互協力及び安全保障条約（新安保条約）（⑲）',
+                details: '「<strong class="text-red-600">日米新時代</strong>」（⑱）を唱えて、前の安保条約をパワーアップさせようとしたよ。1960年、<strong class="text-red-600">新安保条約</strong>にサインして、アメリカ軍がニッポンを守る義務とか、条約の期限（10年）が決まったんだ。ヤバいのが、これに対して国民が全学連とか中心に<strong class="text-blue-600">安保闘争（⑳）</strong>で超キレて、マジで激しい抗議運動が起こったの！'
+            },
+            {
+                pm: '池田勇人',
+                period: '1960-1964',
+                achievement: '「寛容と忍耐」の政治（㉑）、経済成長ガチ勢路線',
+                details: '前の政権の安保闘争で政治がゴタゴタになったから、「<strong class="text-red-600">寛容と忍耐</strong>」をモットーに、革新派とのケンカを避けて政治を落ち着かせたよ。外交は控えめにして、とにかく**経済成長**を最優先する路線（所得倍増計画とか！）を推し進めたんだ。'
+            },
+            {
+                pm: '佐藤栄作',
+                period: '1964-1972',
+                achievement: '沖縄返還（㉖, ㉗）、日韓基本条約（㉓）、非核三原則（㉔）',
+                details: 'ベトナム戦争がヤバい中、1965年に<strong class="text-red-600">日韓基本条約</strong>を結んで韓国と国交を正常化！そして、「<strong class="text-red-600">持たず、つくらず、持ち込ませず</strong>」の<strong class="text-red-600">非核三原則</strong>（㉔）を掲げて、平和国家のスタンスをハッキリさせたよ。1972年にはニクソン大統領（㉖）との交渉を経て、ついに念願の<strong class="text-red-600">沖縄返還協定（㉗）</strong>で沖縄が本土と同じように戻ってきたの！超アゲ！'
+            },
+            {
+                pm: '田中角栄',
+                period: '1972-1974',
+                achievement: '日中国交正常化',
+                details: 'アメリカと中国が仲直りするっていう超激変する国際情勢（ニクソン・ショック）を逃さずCheck！電撃的に中国へ行って、戦後ずっと残ってたデカい問題だった中国との国交を正常化！アジア外交に新しい時代がキタって感じ！'
+            }
+        ];
+
+        // クイズデータ
+        const quizData = [
+            {
+                question: "1954年に吉田茂内閣がMSA協定を結んで、アメリカのヘルプでスタートさせた組織はなーんだ？",
+                options: ["日本社会党", "国際連合", "自衛隊", "日本民主党"],
+                answer: "自衛隊",
+                explanation: "MSA協定（③）がベースになって、1954年に**自衛隊（④）**ができたんだよね！ニッポンの安全保障の始まりって感じ！"
+            },
+            {
+                question: "1955年に保守派が団結して「55年体制」を作った時、日本民主党と自由党が合体してできた政党の名前は？",
+                options: ["日本社会党", "公明党", "民主社会党", "自由民主党"],
+                answer: "自由民主党",
+                explanation: "社会党がガチ団結したから、保守派もヤバい！ってなって、日本民主党と自由党が合同（⑪）して、**自由民主党（LDP）**が爆誕したの！（⑫ 55年体制の確立）"
+            },
+            {
+                question: "1960年、岸信介内閣がサインして、アメリカ軍が日本を守る義務とかがハッキリ書かれた、超〜激アツな条約の名称は？",
+                options: ["日ソ共同宣言", "日韓基本条約", "日米相互協力及び安全保障条約", "沖縄返還協定"],
+                answer: "日米相互協力及び安全保障条約",
+                explanation: "岸信介内閣（⑰）が結んだ「日米相互協力及び安全保障条約（新安保条約）」（⑲）！これに反対したのが**安保闘争（⑳）**だよ。マジで歴史動いた！"
+            },
+            {
+                question: "佐藤栄作内閣が掲げた、日本の核兵器に対する基本ルール（持たず、つくらず、持ち込ませず）は何原則？",
+                options: ["軽武装三原則", "非核三原則", "低姿勢外交原則", "平和国家三原則"],
+                answer: "非核三原則",
+                explanation: "佐藤栄作内閣（㉒）の**非核三原則**（㉔）だよ！「持たず、つくらず、持ち込ませず」！ニッポンが平和国家をアピールする上での超重要なスタンスだよね！"
+            }
+        ];
+
+        let currentQuizIndex = 0;
+        let score = 0;
+        let answered = false;
+
+        const quizQuestion = document.getElementById('quiz-question');
+        const quizOptions = document.getElementById('quiz-options');
+        const quizFeedback = document.getElementById('quiz-feedback');
+        const quizResult = document.getElementById('quiz-result');
+        const quizExplanation = document.getElementById('quiz-explanation');
+        const nextQuizBtn = document.getElementById('next-quiz-btn');
+        const restartQuizBtn = document.getElementById('restart-quiz-btn');
+
+        // クイズを表示する関数
+        function renderQuiz() {
+            if (currentQuizIndex >= quizData.length) {
+                // クイズ終了
+                showFinalScore();
+                return;
+            }
+
+            const currentQuiz = quizData[currentQuizIndex];
+            answered = false;
+            quizFeedback.classList.add('hidden');
+            nextQuizBtn.classList.add('hidden');
+            restartQuizBtn.classList.add('hidden');
+            quizOptions.innerHTML = '';
+
+            quizQuestion.textContent = `Q${currentQuizIndex + 1}. ${currentQuiz.question}`;
+
+            currentQuiz.options.forEach(option => {
+                const button = document.createElement('button');
+                button.textContent = option;
+                button.className = 'quiz-option-btn w-full text-left p-3 rounded-lg font-medium';
+                button.onclick = () => checkAnswer(button, option, currentQuiz.answer, currentQuiz.explanation);
+                quizOptions.appendChild(button);
+            });
+        }
+
+        // 回答をチェックする関数
+        function checkAnswer(selectedButton, selectedOption, correctAnswer, explanation) {
+            if (answered) return;
+            answered = true;
+
+            const buttons = quizOptions.querySelectorAll('.quiz-option-btn');
+            buttons.forEach(btn => btn.disabled = true);
+
+            quizFeedback.classList.remove('hidden');
+            nextQuizBtn.classList.remove('hidden');
+
+            if (selectedOption === correctAnswer) {
+                score++;
+                selectedButton.classList.add('correct');
+                // 正解は Green 系を維持
+                quizFeedback.classList.remove('bg-red-100', 'border-red-400', 'text-red-700', 'bg-blue-100', 'border-blue-400', 'text-blue-700');
+                quizFeedback.classList.add('bg-green-100', 'border-green-400', 'text-green-700');
+                quizResult.textContent = '💖正解！超アゲ！💖';
+            } else {
+                selectedButton.classList.add('incorrect');
+                const correctButton = Array.from(buttons).find(btn => btn.textContent === correctAnswer);
+                if (correctButton) {
+                    correctButton.classList.add('correct');
+                }
+                // 不正解は Red 系を維持
+                quizFeedback.classList.remove('bg-green-100', 'border-green-400', 'text-green-700', 'bg-blue-100', 'border-blue-400', 'text-blue-700');
+                quizFeedback.classList.add('bg-red-100', 'border-red-400', 'text-red-700');
+                quizResult.textContent = '😭残念...不正解！💦';
+            }
+            // ボーダーカラーもそれに合わせる
+            quizFeedback.style.borderColor = (selectedOption === correctAnswer) ? '#68D391' : '#F56565';
+            quizExplanation.innerHTML = `<strong>💡ここがポイント！:</strong> ${explanation}`;
+        }
+
+        // 次の問題へ進む関数
+        window.nextQuiz = function() {
+            currentQuizIndex++;
+            renderQuiz();
+        }
+
+        // 最終スコアを表示する関数
+        function showFinalScore() {
+            quizQuestion.textContent = 'クイズ終了！お疲れ様💖';
+            quizOptions.innerHTML = '';
+            quizFeedback.classList.remove('hidden');
+            nextQuizBtn.classList.add('hidden');
+            restartQuizBtn.classList.remove('hidden');
+
+            // 最終結果の色をアクセントカラー（ピンク）ベースにする
+            quizFeedback.classList.remove('bg-red-100', 'border-red-400', 'text-red-700', 'bg-green-100', 'border-green-400', 'text-green-700', 'bg-blue-100', 'border-blue-400', 'text-blue-700');
+            quizFeedback.classList.add('bg-pink-100', 'border-pink-400', 'text-pink-700');
+            quizFeedback.style.borderColor = '#F687B3'; /* メインアクセントカラー */
+            
+            quizResult.textContent = `結果発表〜！ ${quizData.length} 問中 ${score} 問正解だったよ！すごい！`;
+            quizExplanation.textContent = 'このレポートをもう一回見て、さらに知識を深めちゃお！';
+        }
+
+        // クイズをリセットする関数
+        window.resetQuiz = function() {
+            currentQuizIndex = 0;
+            score = 0;
+            renderQuiz();
+        }
+
+
+        document.addEventListener('DOMContentLoaded', () => {
+
+            const timelineNav = document.getElementById('timeline-nav');
+            const timelineDetails = document.getElementById('timeline-details');
+            
+            // タイムラインの初期化
+            timelineData.forEach((item, index) => {
+                const navItem = document.createElement('div');
+                navItem.className = 'timeline-item relative pl-8 py-2 cursor-pointer';
+                navItem.innerHTML = `<h4 class="font-bold text-lg">${item.pm}</h4><p class="text-sm text-gray-500">${item.period}</p>`;
+                navItem.addEventListener('click', () => {
+                    document.querySelectorAll('.timeline-item').forEach(el => el.classList.remove('active'));
+                    navItem.classList.add('active');
+
+                    timelineDetails.innerHTML = `
+                        <h3 class="text-2xl font-bold accent-color mb-2">${item.pm}内閣 <span class="text-lg font-normal text-gray-500">(${item.period})</span></h3>
+                        <h4 class="text-xl font-semibold text-gray-800 mb-4">主な外交成果: ${item.achievement}</h4>
+                        <p class="text-gray-700">${item.details}</p>
+                    `;
+                });
+                timelineNav.appendChild(navItem);
+                if (index === 0) {
+                    navItem.click();
+                }
+            });
+            
+            // 構造と影響のトグル機能設定
+            function setupToggle(triggerId, detailsId, promptId) {
+                const trigger = document.getElementById(triggerId);
+                const details = document.getElementById(detailsId);
+                const prompt = document.getElementById(promptId);
+                if(trigger) {
+                    trigger.addEventListener('click', () => {
+                        details.classList.toggle('hidden');
+                        if (prompt) prompt.classList.toggle('hidden');
+                    });
+                }
+            }
+
+            setupToggle('conservative-party', 'conservative-details', 'conservative-prompt');
+            setupToggle('progressive-party', 'progressive-details', 'progressive-prompt');
+            setupToggle('impact-1', 'impact-details-1');
+            setupToggle('impact-2', 'impact-details-2');
+            setupToggle('impact-3', 'impact-details-3');
+
+            // クイズの開始
+            renderQuiz();
+        });
+    </script>
+</body>
+</html>
